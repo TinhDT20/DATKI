@@ -39,7 +39,7 @@ class TrainCartpole(TrainBase):
         config,
         train_image_dyn=0,
         train_seq_dyn=0,
-        swingup=0
+        swingup=0 #Tham số quyết định xem nhiệm vụ là cân bằng hay nâng cột (mặc định là 0).
     ):
         """
         param sample_in: one of "train_env", "eval_env"

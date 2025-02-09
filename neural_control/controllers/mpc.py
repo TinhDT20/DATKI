@@ -345,12 +345,27 @@ class MPC(object):
         # np.set_printoptions(suppress=1, precision=3)
         # print(x0_array[1:, :9])
         return opt_u, x0_array
-
     def preprocess_quad(self, current_state, ref_states):
         """
         current_state: list / array of len 12
         ref_states: array of shape (horizon, 9) with pos, vel, acc
         """
+        #print("current_state length:", len(current_state))
+       # print("ref_states shape:", ref_states.shape)
+        #print("self._N:", self._N)
+
+    # Lấy số bước từ ref_states
+        horizon = ref_states.shape[0]
+
+    # Điều chỉnh kích thước ref_states để khớp với self._N
+        if horizon < self._N:
+        # Lặp lại hàng cuối cùng để tăng kích thước
+                padding = np.tile(ref_states[-1, :], (self._N - horizon, 1))
+                ref_states = np.vstack((ref_states, padding))
+        elif horizon > self._N:
+        # Cắt bớt ref_states nếu nhiều hơn self._N
+                ref_states = ref_states[:self._N, :]
+
         # [0 for _ in range(len(current_state))]
         # modify the reference traj to input it into mpc
         changed_middle_ref_states = np.zeros((self._N, len(current_state)))

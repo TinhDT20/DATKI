@@ -362,7 +362,7 @@ def plot_ref_quad(ax, ref):
     ax.set_ylabel("y (in m)")
     ax.set_zlabel("z (in m)")
     set_axes_equal(ax)
-    ax.w_xaxis.set_pane_color((1.0, 1.0, 1.0, 1.0))
+    ax.xaxis.set_pane_color((1.0, 1.0, 1.0, 1.0))
     return ax
 
 

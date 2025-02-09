@@ -390,6 +390,9 @@ if __name__ == "__main__":
     parser.add_argument(
         "-d", "--dataset", type=int, default=0, help="number collect dataset"
     )
+    parser.add_argument(
+        "-n", "--animate", action='store_true', help="animate 3D"
+    )
     args = parser.parse_args()
 
     # PARAMs
@@ -465,11 +468,11 @@ if __name__ == "__main__":
             nr_iters=args.eval,
             return_success=False
         )
-        with open(
-            f"../presentations/final_res/cartpole_seq_plot/{args.model}.json",
-            "w"
-        ) as outfile:
-            json.dump(res_eval, outfile)
+        #with open(
+        #    f"../presentations/final_res/cartpole_seq_plot/{args.model}.json",
+        #    "w"
+       # ) as outfile:
+        #    json.dump(res_eval, outfile)
         # np.savez(
         #     f"../presentations/final_res/cartpole_seq_plot/{args.model}.npz",
         #     np.array(successes), np.array(velocities)

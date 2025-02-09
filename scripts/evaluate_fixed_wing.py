@@ -4,6 +4,8 @@ import argparse
 import json
 import numpy as np
 import torch
+import matplotlib.pyplot as plt
+
 
 from neural_control.environments.wing_env import SimpleWingEnv, run_wing_flight
 from neural_control.plotting import plot_wing_pos_3d, plot_success
@@ -14,6 +16,7 @@ from neural_control.dynamics.fixed_wing_dynamics import FixedWingDynamics
 from neural_control.trajectory.q_funcs import project_to_line
 from evaluate_base import run_mpc_analysis, load_model_params, average_action
 from neural_control.environments.rendering import animate_fixed_wing
+from matplotlib.animation import FuncAnimation
 
 
 class FixedWingEvaluator:
@@ -261,6 +264,27 @@ if __name__ == "__main__":
             os.path.join("output_video", f"wing_traj_{args.model}.npy"),
             drone_traj
         )
+
+
+# Khởi tạo figure và axis
+    fig = plt.figure()
+    ax = fig.add_subplot(111, projection='3d')  # Sử dụng projection 3D nếu cần
+
+# Hàm update để cập nhật animation
+    def update(frame):
+        ax.clear()
+        ax.plot(drone_traj[:frame, 0], drone_traj[:frame, 1], drone_traj[:frame, 2], label='Drone Trajectory')
+        ax.scatter(target_point[0][0], target_point[0][1], target_point[0][2], color='red', label='Target')
+        ax.legend()
+        ax.set_xlabel('X')
+        ax.set_ylabel('Y')
+        ax.set_zlabel('Z')
+
+# Tạo animation
+    ani = FuncAnimation(fig, update, frames=len(drone_traj), interval=50, blit=False)
+
+# Hiển thị animation
+    plt.show()
     if args.animate:
         animate_fixed_wing(
             target_point, [drone_traj]
@@ -269,3 +293,6 @@ if __name__ == "__main__":
         )
 
     evaluator.eval_env.close()
+    print("Target point:", target_point)
+    print("Drone trajectory shape:", drone_traj.shape)
+    print("Drone trajectory:", drone_traj)

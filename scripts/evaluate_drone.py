@@ -53,9 +53,12 @@ class QuadEvaluator():
         self.test_time = test_time
         self.speed_factor = speed_factor
         self.train_mode = train_mode
-        if hasattr(self.controller.net, "reset_hidden_state"):
+        #if hasattr(self.controller.net, "reset_hidden_state"):
             # if it's an lstm based model, reset the hidden state
+          #  self.controller.net.reset_hidden_state()
+        if hasattr(self.controller, "net") and hasattr(self.controller.net, "reset_hidden_state"):
             self.controller.net.reset_hidden_state()
+
 
     def help_render(self, t_prev):
         """
